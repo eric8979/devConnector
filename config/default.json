@@ -1,0 +1,7 @@
+{
+  "mongoURI": "mongodb+srv://eric1234:HcaqSqvf4pvX8RjR@devconnector.8xwp2.mongodb.net/test?retryWrites=true&w=majority",
+
+  "jwtSecret": "ericsecrettoken"
+
+}
+
