@@ -1,5 +1,5 @@
 const express = require('express');
-const connectDB = require('./config/db');
+const connectDB = require('./config/db'); // Get db.js
 
 const app = express();
 
@@ -12,7 +12,7 @@ app.use(express.json({ extended: false }));
 app.get('/', (req, res) => res.send('API running'));
 
 // Define Routes
-// (.use(): intended for binding middleware)
+// .use(): intended for binding middleware ex) get(), post()
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/profile', require('./routes/api/profile'));

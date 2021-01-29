@@ -1,11 +1,12 @@
 const express = require('express');
-const router = express.Router();
-const gravatar = require('gravatar');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const config = require('config');
+const router = express.Router(); // "mini-application", file separation
+const config = require('config'); // organize a set of default parameters
+const gravatar = require('gravatar'); // Globally Recognized Avatar
+const bcrypt = require('bcryptjs'); // password-hashing(encrypting) function
+const jwt = require('jsonwebtoken'); //
 const { check, validationResult } = require('express-validator');
 
+// import user model(schema) - User: one to one mapping of mongoDB data
 const User = require('../../models/User');
 
 // @route POST api/users
@@ -13,6 +14,7 @@ const User = require('../../models/User');
 // @access Public
 router.post(
 	'/',
+	// request form constraints(express-validator)
 	[
 		check('name', 'Name is required').not().isEmpty(),
 		check('email', 'Please include a valid email').isEmail(),
@@ -22,6 +24,7 @@ router.post(
 		).isLength({ min: 6 })
 	],
 	async (req, res) => {
+		// validate request(express-validator)
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
 			return res.status(400).json({ errors: errors.array() });
@@ -30,8 +33,9 @@ router.post(
 		const { name, email, password } = req.body;
 
 		try {
-			// See if user exists
+			// See if user exists in DB, using email
 			let user = await User.findOne({ email });
+
 			if (user) {
 				return res
 					.status(400)
@@ -43,6 +47,7 @@ router.post(
 				r: 'pg',
 				d: 'mm'
 			});
+			// 3. Creating new instance(data) of document
 			user = new User({
 				name,
 				email,
@@ -52,6 +57,7 @@ router.post(
 			// Encrypt password
 			const salt = await bcrypt.genSalt(10);
 			user.password = await bcrypt.hash(password, salt);
+			// 4. Save data to mongoDB
 			await user.save();
 			// Return jsonwebtoken
 			const payload = {
@@ -65,6 +71,7 @@ router.post(
 				{ expiresIn: 3600000 },
 				(err, token) => {
 					if (err) throw err;
+					// send back(response) to client
 					res.json({ token });
 				}
 			);
