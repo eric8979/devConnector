@@ -1,7 +1,7 @@
 {
   "mongoURI": "mongodb+srv://eric1234:HcaqSqvf4pvX8RjR@devconnector.8xwp2.mongodb.net/test?retryWrites=true&w=majority",
-
-  "jwtSecret": "ericsecrettoken"
-
+  "jwtSecret": "ericsecrettoken",
+  "githubClientId": "c196c602d8e077b41efb",
+  "githubSecret": "9b0366419a13fbaae7d839b1764b68e0364d6b2c"
 }
 
